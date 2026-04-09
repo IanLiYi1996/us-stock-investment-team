@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "jobs": [
+    {
+      "id": "pre-market-report",
+      "name": "盘前市场扫描",
+      "enabled": true,
+      "description": "美股开盘前30分钟扫描隔夜重大事件，生成开盘决策信号",
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 1 * * 1-5",
+        "tz": "Asia/Shanghai"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "agentId": "cio",
+        "message": "执行盘前扫描。步骤：\n1. 运行 python3 ~/.openclaw/workspace-cio/scripts/pre_market_scan.py\n2. 读取 signals/pre-market-signals.json\n3. 分析重大风险信号\n4. 如有高风险信号，调整开盘策略（A2A 派单 research 深度调研）\n5. 发送盘前简报到 #invest-us-market 频道"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "slack",
+        "to": "channel:YOUR_CIO_CHANNEL_ID"
+      }
+    },
+
+    {
+      "id": "market-close-summary",
+      "name": "收盘总结",
+      "enabled": true,
+      "description": "美股收盘后汇总持仓盈亏，生成当日投资日报",
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 8 * * 1-5",
+        "tz": "Asia/Shanghai"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "agentId": "cio",
+        "message": "执行收盘总结。步骤：\n1. 从 Alpaca 获取所有持仓的当日盈亏\n2. 汇总今日执行的所有交易（止盈/止损/建仓）\n3. 对比上周同期持仓变化\n4. A2A 派单 KO 更新决策日志\n5. 发送收盘日报到 #invest-us-market 频道\n\n报告格式：\n📊 收盘日报 [日期]\n├─ 今日盈亏：+X% ($X)\n├─ 持仓情况：[列表]\n├─ 今日操作：[止盈/止损/建仓记录]\n└─ 明日关注：[重点事件]"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "slack",
+        "to": "channel:YOUR_CIO_CHANNEL_ID"
+      }
+    },
+
+    {
+      "id": "morning-news-brief",
+      "name": "早间财经新闻简报",
+      "enabled": true,
+      "description": "每个交易日早上8点推送重要财经新闻",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 0 * * 1-5",
+        "tz": "Asia/Shanghai"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "agentId": "research",
+        "message": "生成早间财经新闻简报。步骤：\n1. 抓取最新财经 RSS（WSJ、FT、Bloomberg、Reuters、财联社）\n2. 过滤近8小时新闻\n3. 聚焦：美联储/宏观政策、持仓标的相关、市场情绪\n4. 多源交叉验证重大事件\n5. 发送到 #research 频道\n\n格式：\n📰 早间简报 [日期]\n├─ 🔴 重大事件（影响市场）\n├─ 📈 持仓相关（逐标的）\n└─ 📊 宏观数据（今日重要数据发布）"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "slack",
+        "to": "channel:YOUR_RESEARCH_CHANNEL_ID"
+      }
+    },
+
+    {
+      "id": "evening-news-summary",
+      "name": "晚间财经新闻总结",
+      "enabled": true,
+      "description": "每个交易日晚上8点推送当日财经总结",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 12 * * 1-5",
+        "tz": "Asia/Shanghai"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "agentId": "research",
+        "message": "生成晚间财经总结。步骤：\n1. 汇总今日最重要的财经新闻（近24小时）\n2. 重点：影响明日美股的因素\n3. 持仓标的有无负面事件\n4. 明日重要经济数据预告\n5. 发送到 #research 频道"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "slack",
+        "to": "channel:YOUR_RESEARCH_CHANNEL_ID"
+      }
+    }
+  ]
+}

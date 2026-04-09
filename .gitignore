@@ -20,7 +20,11 @@ logs/
 *.log
 data/
 memory/
-*.json
+
+# JSON：只忽略运行时数据，不忽略配置模板
+signals/*.json
+!openclaw/openclaw.example.json
+!openclaw/cron/cron.example.json
 !config/*.example.yaml
 
 # macOS

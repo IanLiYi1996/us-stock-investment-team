@@ -69,53 +69,49 @@ pip install yfinance akshare alpaca-trade-api pandas numpy
 docker run -d --name searxng -p 8888:8888 searxng/searxng
 ```
 
-### 2. 配置账户
+### 2. 克隆 & 一键部署
 
 ```bash
-# 配置 Alpaca 模拟盘（Paper Trading）
-# 注册：https://app.alpaca.markets/signup
-mkdir -p ~/.alpaca
-cat > ~/.alpaca/credentials << EOF
-ALPACA_API_KEY=your_api_key_here
-ALPACA_SECRET_KEY=your_secret_key_here
-EOF
-```
-
-### 3. 部署 Agent
-
-```bash
-# 克隆项目
 git clone https://github.com/IanLiYi1996/us-stock-investment-team.git
 cd us-stock-investment-team
 
-# 运行部署脚本
+# 一键部署（创建目录、复制配置、设置 Alpaca 密钥）
 chmod +x setup.sh && ./setup.sh
-
-# 按提示配置你的 Slack workspace（用于 Agent 通信）
-openclaw configure
 ```
 
-### 4. 配置你的投资策略
+### 3. 配置 OpenClaw（关键步骤）
 
 ```bash
-# 编辑 CIO Agent 配置
-cp agents/cio/SOUL.md ~/.openclaw/workspace-cio/SOUL.md
-# 按你的策略修改 SOUL.md
+# 复制 OpenClaw 主配置模板
+cp openclaw/openclaw.example.json ~/.openclaw/openclaw.json
 
-# 配置观察清单
-cp config/watchlist.example.yaml ~/.openclaw/workspace-cio/watchlist/my-watchlist.yaml
+# 编辑，填入：Slack Bot Token、App Token、各频道 ID
+nano ~/.openclaw/openclaw.json
 ```
 
-### 5. 启动监控
+详细 Slack 配置步骤见 **[docs/openclaw-setup.md](docs/openclaw-setup.md)**
+
+### 4. 配置定时任务
 
 ```bash
-# 启动盘中监控（开市时间自动运行）
-bash scripts/run_monitor.sh
+# 复制 cron 模板
+cp openclaw/cron/cron.example.json ~/.openclaw/cron/cron.json
 
-# 或单独运行各脚本
-python3 scripts/pre_market_scan.py     # 盘前扫描
-python3 scripts/trading_monitor.py    # 盘中监控
-python3 scripts/overnight_monitor.py  # 盘后监控
+# 编辑，替换频道 ID
+nano ~/.openclaw/cron/cron.json
+```
+
+### 5. 启动
+
+```bash
+# 启动 OpenClaw Gateway
+openclaw gateway start
+
+# 验证 Agent 状态
+openclaw agents list
+
+# 在 Slack #invest-us-market 频道发消息测试
+# → "@CIO 分析一下 AAPL 现在值得买吗"
 ```
 
 ---
@@ -124,13 +120,21 @@ python3 scripts/overnight_monitor.py  # 盘后监控
 
 ```
 us-stock-investment-team/
+├── openclaw/                  # ⭐ OpenClaw 核心配置（最先配置这里）
+│   ├── openclaw.example.json  # Agent注册 + Slack绑定 + 频道路由
+│   └── cron/
+│       └── cron.example.json  # 定时任务（盘前扫描/收盘总结/新闻简报）
 ├── agents/                    # 各 Agent 配置模板
 │   ├── cio/                   # CIO - 交易执行
+│   │   ├── SOUL.md            # 投资策略、止损规则、自主权边界
+│   │   ├── AGENTS.md          # 工作流程
+│   │   ├── TOOLS.md           # Alpaca/yfinance 使用参考
+│   │   └── IDENTITY.md        # Agent 身份
 │   ├── research/              # Research - 调研分析
 │   ├── ko/                    # KO - 知识沉淀
-│   └── advisor/               # Advisor - 投顾服务
+│   └── advisor/               # Advisor - 投顾服务（可选）
 ├── shared/                    # 全局共享规则
-│   ├── SYSTEM_RULES.md        # 系统准则
+│   ├── SYSTEM_RULES.md        # 系统准则（自主权阶梯、任务分类）
 │   ├── A2A_PROTOCOL.md        # Agent 间协作协议
 │   └── TASK_PROTOCOL.md       # 任务分类与台账
 ├── scripts/                   # 自动化脚本
@@ -140,14 +144,15 @@ us-stock-investment-team/
 │   ├── trading_monitor.py     # 盘中止损止盈
 │   └── run_monitor.sh         # 监控守护脚本
 ├── config/                    # 配置模板
-│   ├── watchlist.example.yaml # 观察清单模板
+│   ├── watchlist.example.yaml # 观察清单（持仓标的+止损阈值）
 │   └── alpaca.example.env     # API 密钥模板
 ├── principles/                # 投资原则模板
 │   └── INVESTMENT_FRAMEWORK.md
 ├── docs/                      # 详细文档
-│   ├── architecture.md        # 架构说明
+│   ├── openclaw-setup.md      # ⭐ OpenClaw 配置指南（Slack/Agent/Cron）
+│   ├── architecture.md        # 系统架构说明
 │   ├── agents.md              # Agent 配置指南
-│   ├── setup.md               # 详细安装指南
+│   ├── setup.md               # 完整安装指南
 │   └── customization.md       # 策略定制指南
 └── setup.sh                   # 一键部署脚本
 ```
@@ -192,6 +197,7 @@ us-stock-investment-team/
 
 ## 📚 文档
 
+- [⭐ OpenClaw 配置指南](docs/openclaw-setup.md) — **最重要，先看这个**
 - [详细安装指南](docs/setup.md)
 - [Agent 配置指南](docs/agents.md)
 - [系统架构说明](docs/architecture.md)
