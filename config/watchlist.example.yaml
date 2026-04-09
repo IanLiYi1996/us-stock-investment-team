@@ -1,0 +1,87 @@
+# 观察清单模板 (watchlist.example.yaml)
+# 复制为 watchlist.yaml 并填写你的标的
+
+# 核心持仓（按行业分类）
+positions:
+  technology:
+    - symbol: NVDA
+      name: NVIDIA
+      thesis: "AI算力基础设施核心受益者，数据中心GPU需求持续增长"
+      entry_price: 0          # 填写你的成本价
+      target_price: 0         # 目标价
+      stop_loss: 0            # 止损价
+      weight: 0.20            # 目标仓位占比
+
+    - symbol: MSFT
+      name: Microsoft
+      thesis: "Azure云+Copilot AI双引擎，企业AI渗透率持续提升"
+      entry_price: 0
+      target_price: 0
+      stop_loss: 0
+      weight: 0.15
+
+  semiconductor:
+    - symbol: TSM
+      name: TSMC
+      thesis: "全球先进制程垄断，AI芯片代工首选"
+      entry_price: 0
+      target_price: 0
+      stop_loss: 0
+      weight: 0.15
+
+    - symbol: MU
+      name: Micron Technology
+      thesis: "AI服务器HBM需求爆发，存储周期上行"
+      entry_price: 0
+      target_price: 0
+      stop_loss: 0
+      weight: 0.10
+
+  ecommerce:
+    - symbol: AMZN
+      name: Amazon
+      thesis: "AWS云+广告业务高增长，消费电商稳健"
+      entry_price: 0
+      target_price: 0
+      stop_loss: 0
+      weight: 0.15
+
+# 观察清单（潜在标的）
+watchlist:
+  - symbol: META
+    reason: "广告业务复苏，Llama AI战略"
+    trigger: "PE < 20 且 营收增速 > 15%"
+
+  - symbol: GOOGL
+    reason: "搜索广告+Google Cloud+Gemini AI"
+    trigger: "PE < 22"
+
+  - symbol: PLTR
+    reason: "AI数据分析平台，政府+商业双轮驱动"
+    trigger: "营收加速且亏损收窄"
+
+# 止损止盈规则（覆盖 SOUL.md 默认值）
+risk_rules:
+  take_profit:
+    - threshold: 0.08   # 盈利 8%
+      action: sell
+      pct: 0.30         # 卖出 30%
+    - threshold: 0.15   # 盈利 15%
+      action: sell
+      pct: 0.30
+    - threshold: 0.25   # 盈利 25%
+      action: trim_to
+      remaining: 0.10   # 仅保留 10%
+
+  stop_loss:
+    - threshold: -0.12  # 亏损 12%
+      action: sell
+      pct: 0.50
+    - threshold: -0.18  # 亏损 18%
+      action: liquidate
+
+# 仓位管理
+position_limits:
+  max_single_position: 0.20   # 单标的最大 20%
+  max_positions: 8             # 最多同时持有 8 只
+  min_cash_reserve: 0.10       # 最少保留 10% 现金
