@@ -3,9 +3,9 @@
 ## 概述
 
 OpenClaw 是驱动整个投资团队的 Agent 框架。你需要：
-1. **注册 4 个 Agent**（CIO / Research / KO / Advisor）
+1. **注册 5 个 Agent**（CIO / Research / KO / Ops / Advisor）
 2. **绑定 Slack**（Bot Token + 频道路由）
-3. **配置定时任务**（盘前扫描、收盘总结、新闻简报）
+3. **配置定时任务**（盘前扫描、收盘总结、新闻简报、Heartbeat 自检、Ops 审计）
 
 ---
 
@@ -41,9 +41,10 @@ files:write         上传文件（发图表用）
 
 | 频道名 | 用途 | 对应 Agent |
 |--------|------|-----------|
-| `#invest-us-market` | 交易通知、持仓更新 | CIO |
+| `#invest-us-market` | 交易通知、持仓更新、每日简报 | CIO |
 | `#research` | 调研报告 | Research |
 | `#know` | 知识更新、策略文档 | KO |
+| `#ops` | 系统审计报告 | Ops |
 | `#advisor`（可选） | 投顾数据 | Advisor |
 
 **获取频道 ID：**
@@ -92,6 +93,7 @@ openclaw agents list
 ✅ cio       - CIO / 投资执行专家       (workspace-cio)
 ✅ research  - Research / 调研专家      (workspace-research)
 ✅ ko        - KO / 知识官              (workspace-ko)
+✅ ops       - Ops / 系统审计官         (workspace-ops)
 ✅ advisor   - Advisor / 投顾代理       (workspace-advisor)
 ```
 
@@ -111,9 +113,13 @@ cp openclaw/cron/cron.example.json ~/.openclaw/cron/cron.json
 | 任务名 | 时间（北京时间）| 说明 |
 |--------|----------------|------|
 | 早间财经新闻简报 | 周一至五 08:00 | 当日开盘前新闻摘要 |
+| CIO 盘前自检 | 周一至五 09:00 | HEARTBEAT 盘前清单 |
 | 盘前市场扫描 | 周一至五 09:30 | 美股开盘前30min事件扫描 |
 | 收盘总结 | 周一至五 16:30 | 持仓盈亏 + 当日操作记录 |
+| CIO 收盘后自检 | 周一至五 17:00 | HEARTBEAT 收盘后清单 |
+| KO 每日自检 | 周一至五 17:30 | 知识库健康检查 |
 | 晚间财经总结 | 周一至五 20:00 | 影响明日的重要新闻 |
+| Ops 周度审计 | 每周一 11:00 | 系统配置审计 |
 
 **自定义定时任务：**
 ```bash
@@ -187,10 +193,10 @@ openclaw logs --follow
 ```
 □ OpenClaw 已安装 (npm install -g openclaw)
 □ openclaw.json 已配置（Slack tokens + 频道 ID）
-□ 4 个 Agent workspace 已创建（setup.sh 完成）
+□ 5 个 Agent workspace 已创建（setup.sh 完成）
 □ Alpaca Paper Trading 密钥已配置
-□ Slack Bot 已邀请进 4 个频道
-□ cron.json 已配置（频道 ID 已替换）
+□ Slack Bot 已邀请进 5 个频道（invest/research/know/ops/advisor）
+□ cron.json 已配置（频道 ID 已替换，含 Heartbeat 和 Ops 审计任务）
 □ openclaw gateway start 已运行
 □ 在 Slack 中测试 @CIO 消息可以得到回复
 ```

@@ -68,6 +68,7 @@ deploy_agent() {
     research) dst="$HOME/.openclaw/workspace-research" ;;
     ko)       dst="$HOME/.openclaw/workspace-ko" ;;
     advisor)  dst="$HOME/.openclaw/workspace-advisor" ;;
+    ops)      dst="$HOME/.openclaw/workspace-ops" ;;
   esac
 
   if [ -d "$src" ]; then
@@ -90,17 +91,20 @@ deploy_agent cio
 deploy_agent research
 deploy_agent ko
 deploy_agent advisor
+deploy_agent ops
 
-# ─── 5. 复制共享规则 ────────────────────────────────────────────
+# ─── 5. 复制共享规则与模板到所有 workspace ──────────────────────
 echo ""
-echo "📋 复制共享规则..."
-mkdir -p "$WORKSPACE/shared"
-for f in "$SHARED_DIR"/*.md; do
-  if [ -f "$f" ]; then
-    cp "$f" "$WORKSPACE/shared/"
-    echo "  ✅ shared/$(basename $f)"
-  fi
+echo "📋 复制共享规则与模板..."
+for ws in "$WORKSPACE" "$HOME/.openclaw/workspace-research" "$HOME/.openclaw/workspace-ko" "$HOME/.openclaw/workspace-advisor" "$HOME/.openclaw/workspace-ops"; do
+  mkdir -p "$ws/shared"
+  for f in "$SHARED_DIR"/*.md; do
+    if [ -f "$f" ]; then
+      cp "$f" "$ws/shared/"
+    fi
+  done
 done
+echo "  ✅ shared/ 规则已复制到所有 5 个 workspace"
 
 # ─── 6. 复制脚本 ────────────────────────────────────────────────
 echo ""
@@ -120,6 +124,21 @@ if [ ! -f "$WORKSPACE/principles/INVESTMENT_FRAMEWORK.md" ]; then
   cp "$PRINCIPLES_DIR/INVESTMENT_FRAMEWORK.md" "$WORKSPACE/principles/"
   echo "  ✅ principles/INVESTMENT_FRAMEWORK.md"
 fi
+
+# ─── 7.5 创建 KO 知识库目录 ──────────────────────────────────────
+echo ""
+echo "📚 创建 KO 知识库目录..."
+KO_WS="$HOME/.openclaw/workspace-ko"
+mkdir -p "$KO_WS"/{knowledge,inbox}
+mkdir -p "$KO_WS/knowledge/decisions"
+echo "  ✅ $KO_WS/knowledge/ 和 inbox/"
+
+# ─── 7.6 创建 Ops 审计目录 ───────────────────────────────────────
+echo ""
+echo "🛡️  创建 Ops 审计目录..."
+OPS_WS="$HOME/.openclaw/workspace-ops"
+mkdir -p "$OPS_WS"/audits/{weekly,monthly,quarterly}
+echo "  ✅ $OPS_WS/audits/"
 
 # ─── 8. 配置 Alpaca ─────────────────────────────────────────────
 echo ""
@@ -154,20 +173,38 @@ echo "✅ 部署完成！"
 echo ""
 echo "📌 下一步："
 echo ""
-echo "  1. 配置 Slack 频道 ID："
+echo "  1. 配置 OpenClaw 主配置："
+echo "     cp openclaw/openclaw.example.json ~/.openclaw/openclaw.json"
+echo "     编辑 ~/.openclaw/openclaw.json，替换 Slack Token 和频道 ID"
+echo ""
+echo "  2. 创建 5 个 Slack 频道并邀请 Bot："
+echo "     #invest-us-market → CIO"
+echo "     #research         → Research"
+echo "     #know             → KO"
+echo "     #ops              → Ops"
+echo "     #advisor          → Advisor（可选）"
+echo ""
+echo "  3. 配置 CIO 频道 ID："
 echo "     编辑: $WORKSPACE/SOUL.md"
 echo "     替换: RESEARCH_CHANNEL_ID / KO_CHANNEL_ID / CIO_CHANNEL_ID"
 echo ""
-echo "  2. 配置你的持仓标的："
+echo "  4. 填写用户画像（推荐）："
+echo "     编辑: $WORKSPACE/USER.md（风险偏好、通知频率等）"
+echo ""
+echo "  5. 配置你的持仓标的："
 echo "     编辑: $WORKSPACE/watchlist/watchlist.yaml"
 echo ""
-echo "  3. 启动 OpenClaw："
+echo "  6. 配置定时任务："
+echo "     cp openclaw/cron/cron.example.json ~/.openclaw/cron/cron.json"
+echo "     编辑 ~/.openclaw/cron/cron.json，替换频道 ID"
+echo ""
+echo "  7. 启动 OpenClaw："
 echo "     openclaw gateway start"
 echo ""
-echo "  4. 测试股票分析："
+echo "  8. 测试："
 echo "     python3 $WORKSPACE/scripts/stock_analysis.py AAPL"
+echo "     在 Slack #invest-us-market 中 @CIO 测试"
 echo ""
-echo "  5. 详细文档："
-echo "     docs/setup.md"
+echo "  详细文档: docs/openclaw-setup.md"
 echo ""
 echo "🚀 开始你的美股 AI 投资之旅！"

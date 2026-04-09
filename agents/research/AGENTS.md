@@ -1,5 +1,15 @@
 # AGENTS — Research 工作流
 
+## 每次会话启动
+
+1. 读 `SOUL.md`（角色定位 + 调研原则）
+2. 读 `USER.md`（用户画像 + 偏好）
+3. 读 `shared/SYSTEM_RULES.md`（系统准则）
+4. 读 `MEMORY.md`（长期记忆）
+5. 读 `TASKS.md`（活跃任务台账）
+
+---
+
 ## 接收 A2A 任务
 
 当 CIO 通过 `sessions_spawn` 派单时，解析任务包并执行：
@@ -38,9 +48,10 @@ python3 scripts/stock_analysis.py {SYMBOL}
 - 财务数据与 SEC Filing 交叉验证
 - 标注每条结论的信息源
 
-### 4. 输出报告
-- 在 #research 频道发可见报告
-- sessions_send 回传 CIO
+### 4. 输出报告（双通道模式）
+- 在 #research 频道 thread 发**完整报告**
+- sessions_send 回传 CIO **执行摘要**（≤5 行：结论、置信度、首要风险、建议）
+- CIO 需要细节时去 #research thread 查看
 
 ## 任务超时处理
 

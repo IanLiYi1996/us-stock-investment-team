@@ -67,8 +67,47 @@ CIO_CHANNEL_ID      = "C0AJ5AGUW3C"  # ← 填你的
 KO 主要通过 CIO 的 A2A 派单驱动，通常无需大量配置。
 
 建议定制：
-- `agents/ko/SOUL.md` → 调整决策日志格式
+- `agents/ko/SOUL.md` → 调整决策日志格式和 Signal Score 处理规则
+- `agents/ko/USER.md` → 设置复盘频率和知识格式偏好
 - `principles/INVESTMENT_FRAMEWORK.md` → 填写你自己的投资哲学
+
+---
+
+## Ops Agent（系统审计官）
+
+Ops 负责系统治理，防止配置漂移和质量退化。
+
+### 核心配置
+
+**`agents/ops/SOUL.md`** — 审计规则和硬性拦截条件
+
+关键定制：
+- 硬性拦截条件（哪些变更必须 Ops 审核）
+- 审计节奏（周/月/季的频率）
+- 五维评估标准的权重
+
+### 审计节奏
+
+| 周期 | 内容 |
+|------|------|
+| 每周 | S 类 closeout + Self-Update 审计 + 阈值一致性检查 |
+| 每月 | MEMORY 去重 + KO 质量审核 + SYSTEM_RULES 检查 |
+| 每季 | 全面系统健康检查 + 知识库价值回顾 |
+
+详见 `shared/OPS_REVIEW_PROTOCOL.md`
+
+---
+
+## 每 Agent 通用配置文件
+
+所有 Agent 除 SOUL.md/AGENTS.md/IDENTITY.md 外，还可配置：
+
+| 文件 | 用途 | 说明 |
+|------|------|------|
+| `USER.md` | 用户画像 | 风险偏好、沟通习惯、特殊约束 |
+| `MEMORY.md` | 长期记忆 | 验证过的原则、踩坑记录 |
+| `TASKS.md` | 任务台账 | 活跃任务追踪 |
+| `HEARTBEAT.md` | 自检清单 | 仅 CIO 和 KO |
 
 ---
 
@@ -87,6 +126,8 @@ COGNITO_CLIENT_ID=your_client_id
 ---
 
 ## 监控脚本配置
+
+> **重要**：修改脚本中的止损止盈阈值时，必须同步修改 `agents/cio/SOUL.md` 中的对应规则，保持一致。Ops Agent 会周期性检查脚本与 SOUL.md 的阈值一致性。
 
 ### `scripts/pre_market_scan.py`
 

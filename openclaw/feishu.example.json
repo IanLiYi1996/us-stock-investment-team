@@ -26,7 +26,7 @@
         "name": "Research / 调研专家",
         "workspace": "~/.openclaw/workspace-research",
         "subagents": {
-          "allowAgents": []
+          "allowAgents": ["cio", "research", "ko"]
         }
       },
       {
@@ -34,7 +34,7 @@
         "name": "KO / 知识官",
         "workspace": "~/.openclaw/workspace-ko",
         "subagents": {
-          "allowAgents": ["ops"]
+          "allowAgents": ["cio", "research", "ko"]
         }
       },
       {
@@ -70,50 +70,50 @@
     {
       "agentId": "cio",
       "match": {
-        "channel": "slack",
+        "channel": "feishu",
         "peer": {
-          "kind": "channel",
-          "id": "YOUR_CIO_CHANNEL_ID"
+          "kind": "group",
+          "id": "YOUR_CIO_GROUP_ID"
         }
       }
     },
     {
       "agentId": "ko",
       "match": {
-        "channel": "slack",
+        "channel": "feishu",
         "peer": {
-          "kind": "channel",
-          "id": "YOUR_KO_CHANNEL_ID"
+          "kind": "group",
+          "id": "YOUR_KO_GROUP_ID"
         }
       }
     },
     {
       "agentId": "research",
       "match": {
-        "channel": "slack",
+        "channel": "feishu",
         "peer": {
-          "kind": "channel",
-          "id": "YOUR_RESEARCH_CHANNEL_ID"
+          "kind": "group",
+          "id": "YOUR_RESEARCH_GROUP_ID"
         }
       }
     },
     {
       "agentId": "advisor",
       "match": {
-        "channel": "slack",
+        "channel": "feishu",
         "peer": {
-          "kind": "channel",
-          "id": "YOUR_ADVISOR_CHANNEL_ID"
+          "kind": "group",
+          "id": "YOUR_ADVISOR_GROUP_ID"
         }
       }
     },
     {
       "agentId": "ops",
       "match": {
-        "channel": "slack",
+        "channel": "feishu",
         "peer": {
-          "kind": "channel",
-          "id": "YOUR_OPS_CHANNEL_ID"
+          "kind": "group",
+          "id": "YOUR_OPS_GROUP_ID"
         }
       }
     }
@@ -137,41 +137,30 @@
   },
 
   "channels": {
-    "slack": {
-      "mode": "socket",
+    "feishu": {
       "enabled": true,
-      "botToken": "YOUR_SLACK_BOT_TOKEN",
-      "appToken": "YOUR_SLACK_APP_TOKEN",
-      "allowBots": true,
+      "appId": "YOUR_FEISHU_APP_ID",
+      "appSecret": "YOUR_FEISHU_APP_SECRET",
       "groupPolicy": "allowlist",
       "streaming": "partial",
-      "nativeStreaming": true,
-      "replyToModeByChatType": {
-        "channel": "all"
-      },
-      "thread": {
-        "historyScope": "thread",
-        "inheritParent": false
-      },
-      "allowFrom": ["*"],
       "channels": {
-        "YOUR_CIO_CHANNEL_ID": {
+        "YOUR_CIO_GROUP_ID": {
           "allow": true,
           "requireMention": false
         },
-        "YOUR_KO_CHANNEL_ID": {
+        "YOUR_KO_GROUP_ID": {
           "allow": true,
           "requireMention": false
         },
-        "YOUR_RESEARCH_CHANNEL_ID": {
+        "YOUR_RESEARCH_GROUP_ID": {
           "allow": true,
           "requireMention": false
         },
-        "YOUR_ADVISOR_CHANNEL_ID": {
+        "YOUR_ADVISOR_GROUP_ID": {
           "allow": true,
           "requireMention": false
         },
-        "YOUR_OPS_CHANNEL_ID": {
+        "YOUR_OPS_GROUP_ID": {
           "allow": true,
           "requireMention": false
         }
@@ -181,7 +170,7 @@
 
   "plugins": {
     "entries": {
-      "slack": {
+      "feishu": {
         "enabled": true
       }
     }

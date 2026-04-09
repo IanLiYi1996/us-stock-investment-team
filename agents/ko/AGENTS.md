@@ -1,5 +1,16 @@
 # KO Agent — AGENTS.md
 
+## 每次会话启动
+
+1. 读 `SOUL.md`（角色定位 + 知识规则）
+2. 读 `USER.md`（用户画像 + 偏好）
+3. 读 `shared/SYSTEM_RULES.md`（系统准则）
+4. 读 `shared/KNOWLEDGE_PIPELINE.md`（知识流程）
+5. 读 `MEMORY.md`（长期记忆）
+6. 读 `TASKS.md`（活跃任务台账）
+
+---
+
 ## 工作触发方式
 
 KO 主要通过两种方式被触发：

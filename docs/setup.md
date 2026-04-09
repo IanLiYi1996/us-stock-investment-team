@@ -62,8 +62,8 @@ chmod 600 ~/.alpaca/credentials
 ## Step 4：配置 Slack
 
 1. 创建 Slack App：https://api.slack.com/apps
-2. 添加 Bot Token Scopes：`chat:write`, `channels:read`, `channels:history`
-3. 创建频道：`#invest-us-market`, `#research`, `#know`
+2. 添加 Bot Token Scopes：`chat:write`, `channels:read`, `channels:history`, `reactions:write`, `files:write`
+3. 创建 5 个频道：`#invest-us-market`, `#research`, `#know`, `#ops`, `#advisor`（可选）
 4. 将 Bot 邀请进各频道
 
 ```bash
@@ -86,10 +86,12 @@ chmod +x setup.sh
 ```
 
 脚本会：
-- 创建 `~/.openclaw/workspace-cio/` 目录结构
-- 复制 Agent 配置文件
+- 创建 5 个 Agent workspace（cio/research/ko/ops/advisor）
+- 复制 Agent 配置文件（SOUL.md, AGENTS.md, USER.md, MEMORY.md, TASKS.md 等）
+- 复制共享规则与模板到所有 workspace
+- 创建 KO 知识库目录和 Ops 审计目录
 - 复制分析脚本
-- 提示你填写频道 ID
+- 提示你填写频道 ID 和 Alpaca 密钥
 
 ---
 
@@ -127,6 +129,22 @@ RESEARCH_CHANNEL_ID → 实际的 #research 频道 ID（如 C0AJ5AJQP8S）
 KO_CHANNEL_ID       → 实际的 #know 频道 ID
 CIO_CHANNEL_ID      → 实际的 #invest-us-market 频道 ID
 ```
+
+---
+
+## Step 7.5：填写用户画像（推荐）
+
+编辑 `~/.openclaw/workspace-cio/USER.md`，填写你的投资偏好：
+
+```bash
+nano ~/.openclaw/workspace-cio/USER.md
+```
+
+关键字段：
+- 风险承受能力（保守/稳健/积极）
+- 投资期限
+- 通知频率（每笔交易/每日汇总/仅异常）
+- 特殊约束（如"不投烟草股"、"不做空"）
 
 ---
 

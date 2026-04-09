@@ -1,6 +1,6 @@
 # 🤖 US Stock Investment Team
 
-**一套可直接部署的美股 AI 多智能体投研系统**，基于 [OpenClaw](https://openclaw.ai) 构建，4 个 Agent 协同工作，从调研、决策到执行全自动化。
+**一套可直接部署的美股 AI 多智能体投研系统**，基于 [OpenClaw](https://openclaw.ai) 构建，5 个 Agent 协同工作，从调研、决策到执行全自动化，内置系统审计和知识沉淀。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![OpenClaw](https://img.shields.io/badge/Powered%20by-OpenClaw-blue)](https://openclaw.ai)
@@ -15,30 +15,31 @@
   ▼
 ┌─────────────────────────────────────────────────────┐
 │                    CIO Agent                        │
-│  交易执行 · 持仓监控 · 止损止盈 · 决策验证            │
+│  交易执行 · 持仓监控 · 止损止盈 · 决策验证 · 协调   │
 └──────────┬──────────────────────┬────────────────────┘
            │ A2A 派单              │ A2A 派单
            ▼                      ▼
 ┌──────────────────┐    ┌─────────────────────┐
 │  Research Agent  │    │      KO Agent        │
 │ 调研·数据·新闻    │    │  策略沉淀·决策日志   │
-└──────────────────┘    └─────────────────────┘
-           │
-           │ 专业数据查询
-           ▼
-┌──────────────────────────────────────────────────────┐
-│                   Advisor Agent                      │
-│    Stock AI · FX Pricing · Fund Advisory            │
-└──────────────────────────────────────────────────────┘
+└──────────────────┘    └──────────┬──────────┘
+           │                       │ system-level 通知
+           │ 专业数据查询            ▼
+           ▼              ┌─────────────────────┐
+┌──────────────────┐      │     Ops Agent        │
+│  Advisor Agent   │      │  系统审计·漂移防控   │
+│ Stock·FX·Fund    │      └─────────────────────┘
+└──────────────────┘
 ```
 
 ### Agent 分工
 
 | Agent | 职责 | 工具 |
 |-------|------|------|
-| **CIO** | 交易执行、持仓监控、止损止盈、决策验证 | Alpaca API, yfinance |
+| **CIO** | 交易执行、持仓监控、止损止盈、决策验证、团队协调 | Alpaca API, yfinance |
 | **Research** | 新闻搜索、行业调研、财务数据、标的筛选 | yfinance, akshare, RSS |
 | **KO** | 投资策略整理、原则维护、决策日志 | 文档写作 |
+| **Ops** | 配置审计、策略漂移防控、知识质量审核 | 系统审计 |
 | **Advisor** | 专业投顾数据（Stock/FX/Fund） | Finance Advisory API |
 
 ---
@@ -49,8 +50,10 @@
 - ✅ **自动止损止盈**：盘中每 30min 检查，分级止盈（8%/15%/25%）分级止损（12%/18%）
 - ✅ **盘前事件扫描**：美股开盘前自动扫描隔夜重大事件
 - ✅ **多源交叉验证**：至少 2 个独立信息源验证，防止单源误判
-- ✅ **策略知识积累**：KO 自动维护投资原则库和决策日志
-- ✅ **完全可定制**：修改 `SOUL.md` 配置每个 Agent 的角色和策略
+- ✅ **策略知识积累**：KO 自动维护投资原则库和决策日志，Signal 评分驱动知识提炼
+- ✅ **系统审计治理**：Ops Agent 周期性审计配置漂移、阈值一致性、知识质量
+- ✅ **结构化模板**：Closeout/Checkpoint/Self-Update 模板，确保产出可审计可复用
+- ✅ **完全可定制**：修改 `SOUL.md` 和 `USER.md` 配置每个 Agent 的角色和策略
 
 ---
 
@@ -125,18 +128,29 @@ us-stock-investment-team/
 │   └── cron/
 │       └── cron.example.json  # 定时任务（盘前扫描/收盘总结/新闻简报）
 ├── agents/                    # 各 Agent 配置模板
-│   ├── cio/                   # CIO - 交易执行
-│   │   ├── SOUL.md            # 投资策略、止损规则、自主权边界
+│   ├── cio/                   # CIO - 交易执行与协调
+│   │   ├── SOUL.md            # 投资策略、止损规则、自主权边界、协调纪律
 │   │   ├── AGENTS.md          # 工作流程
 │   │   ├── TOOLS.md           # Alpaca/yfinance 使用参考
-│   │   └── IDENTITY.md        # Agent 身份
+│   │   ├── IDENTITY.md        # Agent 身份
+│   │   ├── USER.md            # 用户画像与偏好
+│   │   ├── MEMORY.md          # 长期记忆（验证过的原则、踩坑记录）
+│   │   ├── TASKS.md           # 活跃任务台账
+│   │   └── HEARTBEAT.md       # 盘前/收盘后自检清单
 │   ├── research/              # Research - 调研分析
 │   ├── ko/                    # KO - 知识沉淀
+│   ├── ops/                   # Ops - 系统审计（配置治理、漂移防控）
 │   └── advisor/               # Advisor - 投顾服务（可选）
-├── shared/                    # 全局共享规则
-│   ├── SYSTEM_RULES.md        # 系统准则（自主权阶梯、任务分类）
+├── shared/                    # 全局共享规则与模板
+│   ├── SYSTEM_RULES.md        # 系统准则（自主权阶梯、任务分类、防膨胀）
 │   ├── A2A_PROTOCOL.md        # Agent 间协作协议
-│   └── TASK_PROTOCOL.md       # 任务分类与台账
+│   ├── TASK_PROTOCOL.md       # 任务分类与台账
+│   ├── KNOWLEDGE_PIPELINE.md  # 知识沉淀流程（Signal 评分）
+│   ├── OPS_REVIEW_PROTOCOL.md # Ops 审核协议
+│   ├── CLOSEOUT_TEMPLATE.md   # Closeout 模板
+│   ├── CHECKPOINT_TEMPLATE.md # Checkpoint 模板
+│   ├── SELF_UPDATE_TEMPLATE.md # 自我更新模板
+│   └── SUBAGENT_PACKET_TEMPLATE.md # 子任务包模板
 ├── scripts/                   # 自动化脚本
 │   ├── stock_analysis.py      # 基本面+技术面分析
 │   ├── pre_market_scan.py     # 盘前事件扫描
@@ -197,11 +211,18 @@ us-stock-investment-team/
 
 ## 📚 文档
 
-- [⭐ OpenClaw 配置指南](docs/openclaw-setup.md) — **最重要，先看这个**
+- [⭐ Slack 配置指南](docs/openclaw-setup.md) — **最重要，先看这个**
+- [Discord 接入指南](docs/discord-setup.md) — Discord 平台部署
+- [飞书接入指南](docs/feishu-setup.md) — 飞书平台部署
 - [详细安装指南](docs/setup.md)
 - [Agent 配置指南](docs/agents.md)
+- [核心概念](docs/concepts.md) — 系统设计哲学
+- [Agent 入职指南](docs/agent-onboarding.md) — 新 Agent 上线流程
 - [系统架构说明](docs/architecture.md)
 - [策略定制指南](docs/customization.md)
+- [已知问题](docs/known-issues.md) — 已知限制与应对策略
+- [常见问题](docs/faq.md) — FAQ
+- [系统演进记录](docs/journey.md) — 设计决策与迭代历程
 
 ---
 

@@ -4,7 +4,7 @@
 在 `TASKS.md` 新建一条任务卡：
 - id：YYYYMMDD-序号
 - type：A/P/S
-- owner：cos/cto/builder/cio/ko/ops
+- owner：cio/research/ko/ops/advisor
 - objective：一句话
 - definition_of_done：可验证条件（必须客观）
 - risks：1-3条

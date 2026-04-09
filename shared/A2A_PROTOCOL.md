@@ -16,11 +16,11 @@
 
 ## 1) 权限矩阵（必须遵守）
 
-- CoS → 只能给 CTO 派单/对齐方向（默认不直达 Builder）
-- CTO → 可以派单给 Builder / Research / KO / Ops
-- Builder → 只接单执行；需要澄清时回到 CTO thread 提问
-- CIO → 尽量独立；仅必要时与 CoS/KO 同步
-- KO/Ops → 作为审计/沉淀，通常不主动派单
+- **CIO** → 可以派单给 Research / KO / Advisor；是用户的主要交互入口
+- **Research** → 只接单执行调研；需要澄清时回到 CIO thread 提问
+- **KO** → 主要接单沉淀知识；system-level 知识变更通知 Ops
+- **Ops** → 审计/治理角色，不主动派单；只在硬性拦截条件下阻塞
+- **Advisor** → 只接单提供专业数据分析
 
 （注：技术上 Slack bot 可以给任意频道发消息，但这是组织纪律，不遵守视为 bug。）
 
@@ -67,7 +67,7 @@ A 读取 root message 的 Slack message id（ts），拼出 thread sessionKey：
 
 ### Step 3 — 执行与汇报
 - B 的执行与产出都留在该 thread。
-- 需要上游（如 CTO）掌控节奏时，上游应在自己的协调 thread 里同步 checkpoint/closeout（见第 3 节）。
+- 需要上游（如 CIO）掌控节奏时，上游应在自己的协调 thread 里同步 checkpoint/closeout（见第 3 节）。
 
 ---
 
@@ -99,9 +99,9 @@ A 读取 root message 的 Slack message id（ts），拼出 thread sessionKey：
 
 - 任务根消息必须在目标频道可见（root message 作为锚点）。
 - 关键 checkpoint（开始/阻塞/完成）至少更新 1 次。
-- **上游负责到底**：谁派单（例如 CTO 派给 Builder），谁负责在自己的协调 thread 里持续跟进：
-  - Builder thread 的输出由 CTO 通过 sessions_send 的 tool result 捕获
-  - CTO 必须在 #cto 的对应协调 thread 里同步 checkpoint（避免 用户 去多个频道"捞信息"）
+- **上游负责到底**：谁派单（例如 CIO 派给 Research），谁负责在自己的协调 thread 里持续跟进：
+  - Research thread 的输出由 CIO 通过 sessions_send 的 tool result 捕获
+  - CIO 在 #invest-us-market 的对应协调 thread 里同步 checkpoint（避免用户去多个频道"捞信息"）
 - **双通道留痕**：
   - A2A reply（给上游的结构化回复）
   - Slack thread message（给用户可见的审计日志，格式 `[角色] 内容...`）
@@ -116,14 +116,11 @@ A 读取 root message 的 Slack message id（ts），拼出 thread sessionKey：
 
 ## 4) 频道映射（约定）
 
-- #hq → CoS
-- #cto → CTO
-- #build → Builder
-- #invest → CIO
+- #invest-us-market → CIO（用户主入口）
+- #research → Research
 - #know → KO
 - #ops → Ops
-- #research → Research
-- #main（可选：你的主入口频道） → Main Agent（可选）（不属于本系统，但可作为 用户 的总入口）
+- #advisor → Advisor（可选）
 
 ---
 
@@ -138,4 +135,4 @@ A 读取 root message 的 Slack message id（ts），拼出 thread sessionKey：
 
 如果 Slack thread 行为异常：
 - 退回到"单频道单任务"：临时在频道主线完成该任务
-- 或让 CTO/CoS 在 thread 里发 /new 重置（开始新 session id）
+- 或让 CIO 在 thread 里发 /new 重置（开始新 session id）

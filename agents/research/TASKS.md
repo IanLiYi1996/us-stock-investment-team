@@ -1,0 +1,7 @@
+# TASKS — Research 活跃任务台账
+
+> 所有进行中、阻塞中的调研任务。
+
+| id | type | objective | status | next_action | signal |
+|----|------|-----------|--------|-------------|--------|
+<!-- 按 TASK_PROTOCOL 格式管理 -->

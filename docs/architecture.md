@@ -1,5 +1,7 @@
 # 系统架构详解
 
+> 架构图: [architecture.svg](architecture.svg)
+
 ## 整体架构
 
 ```
@@ -97,11 +99,35 @@ pre_market_scan.py（UTC 12:00/13:00 运行）：
 ## Slack 频道架构
 
 ```
-#invest-us-market  — CIO 主频道（交易通知、持仓更新）
-#research          — Research 调研报告
+#invest-us-market  — CIO 主频道（交易通知、持仓更新、每日简报）
+#research          — Research 调研报告（完整报告留在 thread）
 #know              — KO 知识更新
+#ops               — Ops 系统审计报告
 #advisor           — Advisor 投顾数据（可选）
 ```
+
+## Ops Agent（系统审计）
+
+Ops 是系统治理层，负责：
+- **配置审计**：审计 Agent 自我修改，防止策略漂移
+- **阈值一致性**：验证脚本配置与 SOUL.md 策略一致
+- **知识质量**：周期性审核 KO 产出的知识质量
+- **MEMORY 治理**：月度去重、归档过时条目
+
+审计节奏：周度（S 类 closeout + Self-Update）、月度（MEMORY + 知识质量）、季度（全面健康检查）。
+
+详见 [shared/OPS_REVIEW_PROTOCOL.md](../shared/OPS_REVIEW_PROTOCOL.md)
+
+## 每 Agent 配置文件
+
+每个 Agent 除了核心的 `SOUL.md` / `AGENTS.md` / `IDENTITY.md`，还包含：
+
+| 文件 | 用途 |
+|------|------|
+| `USER.md` | 用户画像与偏好（会话启动时加载） |
+| `MEMORY.md` | 长期记忆，少而精的验证过的知识 |
+| `TASKS.md` | 活跃任务台账 |
+| `HEARTBEAT.md` | 自检清单（仅 CIO 和 KO） |
 
 ## Agent 间通信协议
 
@@ -109,5 +135,7 @@ pre_market_scan.py（UTC 12:00/13:00 运行）：
 
 **核心原则：**
 1. 跨 Agent 调用 = Slack 可见锚点 + sessions_spawn 触发
-2. 结果回传 = sessions_send + Slack 频道可见消息
-3. 所有操作可追溯（Slack 线程 = 任务审计日志）
+2. 结果回传 = sessions_send + Slack 频道可见消息（双通道模式）
+3. Research 回传 CIO：执行摘要（≤5行），完整报告留在 #research thread
+4. 所有操作可追溯（Slack 线程 = 任务审计日志）
+5. Closeout/Checkpoint 使用 `shared/` 中的标准模板

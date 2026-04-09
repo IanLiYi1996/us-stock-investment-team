@@ -1,0 +1,185 @@
+{
+  "_comment": "多平台混合配置示例：Slack（主平台）+ Discord（备用）。同一 Agent 可绑定多个平台频道。",
+
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "YOUR_MODEL_ID"
+      },
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 8
+      }
+    },
+    "list": [
+      {
+        "id": "cio",
+        "name": "CIO / 投资执行专家",
+        "workspace": "~/.openclaw/workspace-cio",
+        "subagents": {
+          "allowAgents": ["research", "ko"]
+        }
+      },
+      {
+        "id": "research",
+        "name": "Research / 调研专家",
+        "workspace": "~/.openclaw/workspace-research",
+        "subagents": {
+          "allowAgents": []
+        }
+      },
+      {
+        "id": "ko",
+        "name": "KO / 知识官",
+        "workspace": "~/.openclaw/workspace-ko",
+        "subagents": {
+          "allowAgents": []
+        }
+      },
+      {
+        "id": "advisor",
+        "name": "Advisor / 投顾代理",
+        "workspace": "~/.openclaw/workspace-advisor",
+        "subagents": {
+          "allowAgents": []
+        }
+      },
+      {
+        "id": "ops",
+        "name": "Ops / 系统审计官",
+        "workspace": "~/.openclaw/workspace-ops",
+        "subagents": {
+          "allowAgents": []
+        }
+      }
+    ]
+  },
+
+  "tools": {
+    "sessions": {
+      "visibility": "all"
+    },
+    "agentToAgent": {
+      "enabled": true,
+      "allow": ["cio", "ko", "research", "advisor", "ops"]
+    }
+  },
+
+  "routing": [
+    {
+      "_comment": "Slack 路由（主平台）",
+      "agentId": "cio",
+      "match": { "channel": "slack", "peer": { "kind": "channel", "id": "YOUR_SLACK_CIO_CHANNEL_ID" } }
+    },
+    {
+      "agentId": "research",
+      "match": { "channel": "slack", "peer": { "kind": "channel", "id": "YOUR_SLACK_RESEARCH_CHANNEL_ID" } }
+    },
+    {
+      "agentId": "ko",
+      "match": { "channel": "slack", "peer": { "kind": "channel", "id": "YOUR_SLACK_KO_CHANNEL_ID" } }
+    },
+    {
+      "agentId": "ops",
+      "match": { "channel": "slack", "peer": { "kind": "channel", "id": "YOUR_SLACK_OPS_CHANNEL_ID" } }
+    },
+    {
+      "agentId": "advisor",
+      "match": { "channel": "slack", "peer": { "kind": "channel", "id": "YOUR_SLACK_ADVISOR_CHANNEL_ID" } }
+    },
+    {
+      "_comment": "Discord 路由（备用平台）",
+      "agentId": "cio",
+      "match": { "channel": "discord", "peer": { "kind": "channel", "id": "YOUR_DISCORD_CIO_CHANNEL_ID" } }
+    },
+    {
+      "agentId": "research",
+      "match": { "channel": "discord", "peer": { "kind": "channel", "id": "YOUR_DISCORD_RESEARCH_CHANNEL_ID" } }
+    },
+    {
+      "agentId": "ko",
+      "match": { "channel": "discord", "peer": { "kind": "channel", "id": "YOUR_DISCORD_KO_CHANNEL_ID" } }
+    },
+    {
+      "agentId": "ops",
+      "match": { "channel": "discord", "peer": { "kind": "channel", "id": "YOUR_DISCORD_OPS_CHANNEL_ID" } }
+    },
+    {
+      "agentId": "advisor",
+      "match": { "channel": "discord", "peer": { "kind": "channel", "id": "YOUR_DISCORD_ADVISOR_CHANNEL_ID" } }
+    }
+  ],
+
+  "messages": {
+    "ackReactionScope": "group-mentions"
+  },
+
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto",
+    "restart": true
+  },
+
+  "session": {
+    "dmScope": "per-channel-peer",
+    "agentToAgent": {
+      "maxPingPongTurns": 4
+    }
+  },
+
+  "channels": {
+    "slack": {
+      "mode": "socket",
+      "enabled": true,
+      "botToken": "YOUR_SLACK_BOT_TOKEN",
+      "appToken": "YOUR_SLACK_APP_TOKEN",
+      "allowBots": true,
+      "groupPolicy": "allowlist",
+      "streaming": "partial",
+      "nativeStreaming": true,
+      "replyToModeByChatType": {
+        "channel": "all"
+      },
+      "thread": {
+        "historyScope": "thread",
+        "inheritParent": false
+      },
+      "allowFrom": ["*"],
+      "channels": {
+        "YOUR_SLACK_CIO_CHANNEL_ID": { "allow": true, "requireMention": false },
+        "YOUR_SLACK_KO_CHANNEL_ID": { "allow": true, "requireMention": false },
+        "YOUR_SLACK_RESEARCH_CHANNEL_ID": { "allow": true, "requireMention": false },
+        "YOUR_SLACK_ADVISOR_CHANNEL_ID": { "allow": true, "requireMention": false },
+        "YOUR_SLACK_OPS_CHANNEL_ID": { "allow": true, "requireMention": false }
+      }
+    },
+    "discord": {
+      "enabled": true,
+      "botToken": "YOUR_DISCORD_BOT_TOKEN",
+      "guildId": "YOUR_GUILD_ID",
+      "groupPolicy": "allowlist",
+      "streaming": "partial",
+      "thread": {
+        "historyScope": "thread",
+        "inheritParent": false
+      },
+      "channels": {
+        "YOUR_DISCORD_CIO_CHANNEL_ID": { "allow": true, "requireMention": false },
+        "YOUR_DISCORD_KO_CHANNEL_ID": { "allow": true, "requireMention": false },
+        "YOUR_DISCORD_RESEARCH_CHANNEL_ID": { "allow": true, "requireMention": false },
+        "YOUR_DISCORD_ADVISOR_CHANNEL_ID": { "allow": true, "requireMention": false },
+        "YOUR_DISCORD_OPS_CHANNEL_ID": { "allow": true, "requireMention": false }
+      }
+    }
+  },
+
+  "plugins": {
+    "entries": {
+      "slack": { "enabled": true },
+      "discord": { "enabled": true }
+    }
+  }
+}

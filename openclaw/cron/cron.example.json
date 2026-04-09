@@ -95,6 +95,102 @@
         "channel": "slack",
         "to": "channel:YOUR_RESEARCH_CHANNEL_ID"
       }
+    },
+
+    {
+      "id": "cio-heartbeat-premarket",
+      "name": "CIO 盘前自检",
+      "enabled": true,
+      "description": "盘前执行 CIO HEARTBEAT 自检清单",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 1 * * 1-5",
+        "tz": "Asia/Shanghai"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "agentId": "cio",
+        "message": "执行盘前 HEARTBEAT 自检。按 HEARTBEAT.md 盘前清单逐项检查：\n1. 持仓健康度（是否有仓位接近止损/止盈线）\n2. 待办事项（TASKS.md 过期任务、未完成的 Research 派单）\n3. 准备每日简报（Top 3 关注标的 + 昨日结果 + 今日催化剂）\n4. 发送简报到 #invest-us-market 频道"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "slack",
+        "to": "channel:YOUR_CIO_CHANNEL_ID"
+      }
+    },
+
+    {
+      "id": "cio-heartbeat-postclose",
+      "name": "CIO 收盘后自检",
+      "enabled": true,
+      "description": "收盘后执行 CIO HEARTBEAT 自检清单",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 9 * * 1-5",
+        "tz": "Asia/Shanghai"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "agentId": "cio",
+        "message": "执行收盘后 HEARTBEAT 自检。按 HEARTBEAT.md 收盘后清单逐项检查：\n1. 当日交易总结（执行了哪些交易、是否触发止损止盈）\n2. 知识沉淀（是否有 signal≥2 的 closeout 需要 KO 处理）\n3. 明日准备（明日催化剂事件、是否需要提前派单 Research）"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "slack",
+        "to": "channel:YOUR_CIO_CHANNEL_ID"
+      }
+    },
+
+    {
+      "id": "ops-weekly-audit",
+      "name": "Ops 周度审计",
+      "enabled": true,
+      "description": "每周一执行系统审计",
+      "schedule": {
+        "kind": "cron",
+        "expr": "0 3 * * 1",
+        "tz": "Asia/Shanghai"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "agentId": "ops",
+        "message": "执行周度审计。按 OPS_REVIEW_PROTOCOL 检查：\n1. 本周所有 S 类 closeout\n2. 各 Agent 的 Self-Update 记录\n3. CIO 止损止盈阈值是否被意外修改（对比 SOUL.md 与脚本配置）\n4. 生成周审计摘要发送到 #ops 频道"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "slack",
+        "to": "channel:YOUR_OPS_CHANNEL_ID"
+      }
+    },
+
+    {
+      "id": "ko-daily-heartbeat",
+      "name": "KO 每日自检",
+      "enabled": true,
+      "description": "每日收盘后执行 KO 知识库健康检查",
+      "schedule": {
+        "kind": "cron",
+        "expr": "30 9 * * 1-5",
+        "tz": "Asia/Shanghai"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "agentId": "ko",
+        "message": "执行每日 HEARTBEAT 自检。按 HEARTBEAT.md 清单逐项检查：\n1. inbox 中是否有待处理的 closeout\n2. signal≥2 的 closeout 是否已全部处理\n3. MEMORY.md 是否有过时条目\n4. 最近 7 天新增原则是否有后续验证结果"
+      },
+      "delivery": {
+        "mode": "announce",
+        "channel": "slack",
+        "to": "channel:YOUR_KO_CHANNEL_ID"
+      }
     }
   ]
 }

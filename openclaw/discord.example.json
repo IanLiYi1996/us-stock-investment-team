@@ -26,7 +26,7 @@
         "name": "Research / 调研专家",
         "workspace": "~/.openclaw/workspace-research",
         "subagents": {
-          "allowAgents": []
+          "allowAgents": ["cio", "research", "ko"]
         }
       },
       {
@@ -34,7 +34,7 @@
         "name": "KO / 知识官",
         "workspace": "~/.openclaw/workspace-ko",
         "subagents": {
-          "allowAgents": ["ops"]
+          "allowAgents": ["cio", "research", "ko"]
         }
       },
       {
@@ -70,7 +70,7 @@
     {
       "agentId": "cio",
       "match": {
-        "channel": "slack",
+        "channel": "discord",
         "peer": {
           "kind": "channel",
           "id": "YOUR_CIO_CHANNEL_ID"
@@ -80,7 +80,7 @@
     {
       "agentId": "ko",
       "match": {
-        "channel": "slack",
+        "channel": "discord",
         "peer": {
           "kind": "channel",
           "id": "YOUR_KO_CHANNEL_ID"
@@ -90,7 +90,7 @@
     {
       "agentId": "research",
       "match": {
-        "channel": "slack",
+        "channel": "discord",
         "peer": {
           "kind": "channel",
           "id": "YOUR_RESEARCH_CHANNEL_ID"
@@ -100,7 +100,7 @@
     {
       "agentId": "advisor",
       "match": {
-        "channel": "slack",
+        "channel": "discord",
         "peer": {
           "kind": "channel",
           "id": "YOUR_ADVISOR_CHANNEL_ID"
@@ -110,7 +110,7 @@
     {
       "agentId": "ops",
       "match": {
-        "channel": "slack",
+        "channel": "discord",
         "peer": {
           "kind": "channel",
           "id": "YOUR_OPS_CHANNEL_ID"
@@ -137,23 +137,16 @@
   },
 
   "channels": {
-    "slack": {
-      "mode": "socket",
+    "discord": {
       "enabled": true,
-      "botToken": "YOUR_SLACK_BOT_TOKEN",
-      "appToken": "YOUR_SLACK_APP_TOKEN",
-      "allowBots": true,
+      "botToken": "YOUR_DISCORD_BOT_TOKEN",
+      "guildId": "YOUR_GUILD_ID",
       "groupPolicy": "allowlist",
       "streaming": "partial",
-      "nativeStreaming": true,
-      "replyToModeByChatType": {
-        "channel": "all"
-      },
       "thread": {
         "historyScope": "thread",
         "inheritParent": false
       },
-      "allowFrom": ["*"],
       "channels": {
         "YOUR_CIO_CHANNEL_ID": {
           "allow": true,
@@ -181,7 +174,7 @@
 
   "plugins": {
     "entries": {
-      "slack": {
+      "discord": {
         "enabled": true
       }
     }

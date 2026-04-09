@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 680" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="108%">
+      <feDropShadow dx="1" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+    </filter>
+    <linearGradient id="gUser" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+    <linearGradient id="gCIO" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <linearGradient id="gResearch" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+    <linearGradient id="gKO" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="gOps" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="gAdvisor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ec4899"/><stop offset="100%" stop-color="#db2777"/>
+    </linearGradient>
+    <linearGradient id="gData" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#64748b"/><stop offset="100%" stop-color="#475569"/>
+    </linearGradient>
+    <linearGradient id="gCron" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f97316"/><stop offset="100%" stop-color="#ea580c"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-auto">
+      <path d="M 0 0 L 10 3.5 L 0 7 z" fill="#94a3b8"/>
+    </marker>
+    <marker id="arrowA2A" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-auto">
+      <path d="M 0 0 L 10 3.5 L 0 7 z" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowKO" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-auto">
+      <path d="M 0 0 L 10 3.5 L 0 7 z" fill="#8b5cf6"/>
+    </marker>
+    <marker id="arrowOps" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-auto">
+      <path d="M 0 0 L 10 3.5 L 0 7 z" fill="#10b981"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="680" rx="12" fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#1e293b">US Stock Investment Team — System Architecture</text>
+  <text x="450" y="56" text-anchor="middle" font-size="12" fill="#64748b">5 Agents · 3 Platforms · Automated Trading &amp; Knowledge Pipeline</text>
+
+  <!-- ===== User ===== -->
+  <rect x="350" y="74" width="200" height="44" rx="22" fill="url(#gUser)" filter="url(#shadow)"/>
+  <text x="450" y="101" text-anchor="middle" font-size="14" font-weight="600" fill="#fff">👤 User (Slack / Discord / 飞书)</text>
+
+  <!-- Arrow User → CIO -->
+  <line x1="450" y1="118" x2="450" y2="152" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ===== CIO ===== -->
+  <rect x="260" y="156" width="380" height="80" rx="10" fill="url(#gCIO)" filter="url(#shadow)"/>
+  <text x="450" y="182" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">📈 CIO — 投资执行 &amp; 协调</text>
+  <text x="450" y="200" text-anchor="middle" font-size="11" fill="#fef3c7">#invest-us-market · 交易执行 · 持仓监控 · 止损止盈</text>
+  <text x="450" y="216" text-anchor="middle" font-size="11" fill="#fef3c7">CoS 协调纪律 · 每日简报 · 决策架构 · 双通道汇报</text>
+  <text x="450" y="230" text-anchor="middle" font-size="10" fill="#fde68a">SOUL · AGENTS · USER · MEMORY · TASKS · TOOLS · HEARTBEAT</text>
+
+  <!-- ===== A2A Arrows from CIO ===== -->
+  <!-- CIO → Research -->
+  <path d="M 340 236 Q 240 280 200 310" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrowA2A)"/>
+  <text x="230" y="275" font-size="10" fill="#d97706" transform="rotate(-35,230,275)">A2A 派单</text>
+
+  <!-- CIO → KO -->
+  <path d="M 560 236 Q 660 280 700 310" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrowA2A)"/>
+  <text x="640" y="275" font-size="10" fill="#d97706" transform="rotate(35,640,275)">A2A 派单</text>
+
+  <!-- CIO → Advisor -->
+  <path d="M 370 236 L 180 432" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrowA2A)"/>
+
+  <!-- ===== Research ===== -->
+  <rect x="50" y="314" width="300" height="74" rx="10" fill="url(#gResearch)" filter="url(#shadow)"/>
+  <text x="200" y="340" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">🔎 Research — 调研分析</text>
+  <text x="200" y="356" text-anchor="middle" font-size="11" fill="#dbeafe">#research · 多源新闻 · 财务数据 · 交叉验证</text>
+  <text x="200" y="372" text-anchor="middle" font-size="10" fill="#bfdbfe">双通道: 完整报告留 thread · 摘要(≤5行)回传 CIO</text>
+  <text x="200" y="384" text-anchor="middle" font-size="9" fill="#93c5fd">SOUL · AGENTS · USER · MEMORY · TASKS · TOOLS</text>
+
+  <!-- ===== KO ===== -->
+  <rect x="550" y="314" width="300" height="74" rx="10" fill="url(#gKO)" filter="url(#shadow)"/>
+  <text x="700" y="340" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">🧠 KO — 知识沉淀</text>
+  <text x="700" y="356" text-anchor="middle" font-size="11" fill="#ede9fe">#know · 决策日志 · 原则维护 · Signal 0-3</text>
+  <text x="700" y="372" text-anchor="middle" font-size="10" fill="#ddd6fe">每次最多提炼 0-2 条 · 含边界+反例+回滚</text>
+  <text x="700" y="384" text-anchor="middle" font-size="9" fill="#c4b5fd">SOUL · AGENTS · USER · MEMORY · TASKS · TOOLS · HEARTBEAT</text>
+
+  <!-- KO → Ops -->
+  <path d="M 750 388 Q 770 420 770 440" fill="none" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrowKO)"/>
+  <text x="780" y="418" font-size="9" fill="#7c3aed">system-level</text>
+
+  <!-- ===== Ops ===== -->
+  <rect x="580" y="444" width="270" height="70" rx="10" fill="url(#gOps)" filter="url(#shadow)"/>
+  <text x="715" y="468" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">🛡️ Ops — 系统审计</text>
+  <text x="715" y="484" text-anchor="middle" font-size="11" fill="#d1fae5">#ops · 配置漂移检查 · 阈值一致性 · 知识质量</text>
+  <text x="715" y="500" text-anchor="middle" font-size="10" fill="#a7f3d0">周/月/季审计 · 五维评估 · 硬性拦截</text>
+  <text x="715" y="510" text-anchor="middle" font-size="9" fill="#6ee7b7">SOUL · AGENTS · USER · MEMORY · TASKS · TOOLS · HEARTBEAT</text>
+
+  <!-- ===== Advisor ===== -->
+  <rect x="50" y="444" width="300" height="70" rx="10" fill="url(#gAdvisor)" filter="url(#shadow)"/>
+  <text x="200" y="468" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">💼 Advisor — 投顾服务</text>
+  <text x="200" y="484" text-anchor="middle" font-size="11" fill="#fce7f3">#advisor · Stock/FX/Fund API · 风险指标</text>
+  <text x="200" y="500" text-anchor="middle" font-size="10" fill="#fbcfe8">降级方案: yfinance + 本地计算</text>
+  <text x="200" y="510" text-anchor="middle" font-size="9" fill="#f9a8d4">SOUL · AGENTS · USER · MEMORY · TASKS · TOOLS · HEARTBEAT</text>
+
+  <!-- ===== Data Sources ===== -->
+  <rect x="50" y="558" width="400" height="52" rx="8" fill="url(#gData)" filter="url(#shadow)"/>
+  <text x="250" y="580" text-anchor="middle" font-size="12" font-weight="600" fill="#fff">📊 Data Sources</text>
+  <text x="250" y="596" text-anchor="middle" font-size="10" fill="#cbd5e1">Alpaca API · yfinance · akshare · SearXNG · Tavily · RSS Feeds</text>
+
+  <!-- Arrows to Data -->
+  <line x1="200" y1="514" x2="200" y2="556" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="340" y1="236" x2="250" y2="556" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3" opacity="0.4"/>
+
+  <!-- ===== Cron / Automation ===== -->
+  <rect x="500" y="558" width="350" height="52" rx="8" fill="url(#gCron)" filter="url(#shadow)"/>
+  <text x="675" y="580" text-anchor="middle" font-size="12" font-weight="600" fill="#fff">⏰ Cron Automation (8 jobs)</text>
+  <text x="675" y="596" text-anchor="middle" font-size="10" fill="#fed7aa">盘前扫描 · 收盘总结 · 新闻简报 · Heartbeat · Ops审计</text>
+
+  <!-- Cron arrows -->
+  <line x1="600" y1="558" x2="500" y2="236" stroke="#f97316" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+  <line x1="700" y1="558" x2="715" y2="514" stroke="#f97316" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+
+  <!-- ===== Knowledge Pipeline (bottom) ===== -->
+  <rect x="120" y="630" width="660" height="36" rx="6" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="450" y="653" text-anchor="middle" font-size="11" fill="#475569">
+    Knowledge Pipeline:  Layer 0 (原始对话)  →  Layer 1 (Closeout 10-15行)  →  Layer 2 (Principles / Patterns / Scars)
+  </text>
+
+  <!-- ===== Legend ===== -->
+  <rect x="16" y="74" width="150" height="80" rx="6" fill="#fff" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="24" y="92" font-size="10" font-weight="600" fill="#475569">Legend</text>
+  <line x1="24" y1="106" x2="54" y2="106" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="60" y="110" font-size="9" fill="#64748b">A2A 派单</text>
+  <line x1="24" y1="122" x2="54" y2="122" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="60" y="126" font-size="9" fill="#64748b">数据流</text>
+  <line x1="24" y1="138" x2="54" y2="138" stroke="#f97316" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="60" y="142" font-size="9" fill="#64748b">Cron 触发</text>
+</svg>
